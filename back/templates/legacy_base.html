@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>POC-Legacy</title>
+    <style>
+      * {
+        margin: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        display: flex;
+        gap: 20px;
+      }
+
+      #legacy-content {
+        padding: 20px 0;
+      }
+    </style>
+  </head>
+  {% block body %}
+  <body>
+    <!-- Sidebar VueJS app mounting point-->
+    <div id="legacy-app"></div>
+
+    <!-- Wrapper for legacy pages -->
+    <div id="legacy-content">{% block content %} {% endblock %}</div>
+
+    <!-- Menu options to be rendered by VueJS app -->
+    <script id="menu_items" type="application/json">
+      {{ menuItems | dump | safe }}
+    </script>
+
+    <script>
+      (function (menuItemsJson) {
+        window.initData = {
+          menuItems: JSON.parse(
+            menuItemsJson.textContent || menuItemsJson.innerText || "{}"
+          ),
+        };
+      })(document.getElementById("menu_items"));
+    </script>
+
+    <!-- Sidebar VueJS app scripts-->
+    {% for script in scripts %}
+    <script type="text/javascript" src="{{ script }}"></script>
+    {% endfor %}
+  </body>
+  {% endblock body %}
+</html>

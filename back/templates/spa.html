@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>POC-SPA</title>
+    <style>
+      * {
+        margin: 0;
+        box-sizing: border-box;
+      }
+    </style>
+  </head>
+  {% block body %}
+  <body>
+    <noscript>
+      <strong
+        >We're sorry but front doesn't work properly without JavaScript enabled.
+        Please enable it to continue.</strong
+      >
+    </noscript>
+    <div id="app"></div>
+
+    <!-- Menu options to be rendered by VueJS app -->
+    <script id="menu_items" type="application/json">
+      {{ menuItems | dump | safe }}
+    </script>
+
+    <script>
+      (function (menuItemsJson) {
+        window.initData = {
+          menuItems: JSON.parse(
+            menuItemsJson.textContent || menuItemsJson.innerText || "{}"
+          ),
+        };
+      })(document.getElementById("menu_items"));
+    </script>
+
+    {% for script in scripts %}
+    <script type="text/javascript" src="{{ script }}"></script>
+    {% endfor %}
+  </body>
+  {% endblock body %}
+</html>
